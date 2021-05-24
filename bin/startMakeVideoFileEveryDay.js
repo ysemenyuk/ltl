@@ -1,12 +1,12 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-import copyFilesForVideo from '../funcs/copyFilesForVideo.js';
-import makeVideoSpawn from '../funcs/makeVideoSpawn.js';
-import { makeTodayName, parseTime } from '../funcs/utils.js';
-import { makeFilesPathsFromManyDirs } from '../funcs/makePaths.js';
+import { getFilesPathsFromManyDirs } from "../funcs/getPaths.js";
+import copyFilesForVideo from "../funcs/copyFilesForVideo.js";
+import makeVideoSpawn from "../funcs/makeVideoSpawn.js";
+import { makeTodayName, parseTime } from "../funcs/utils.js";
 
-import { cam1 } from '../cameras.js';
+import { cam3 } from "../cameras.js";
 
 const fsp = fs.promises;
 
@@ -21,11 +21,12 @@ const makeVideoFileEveryDay = (settings) => {
   const videoFileName = `${dirName}-video`;
 
   const pathToTodayDir = path.join(pathToImagesDir, dirName);
-  const pathToTmpDir = path.join(pathToCamDir, 'tmp-for-everyday-video');
+  const pathToTmpDir = path.join(pathToCamDir, "tmp-for-everyday-video");
 
-  fsp.rmdir(pathToTmpDir, { recursive: true })
+  fsp
+    .rmdir(pathToTmpDir, { recursive: true })
     .then(() => fsp.mkdir(pathToTmpDir))
-    .then(() => makeFilesPathsFromManyDirs([pathToTodayDir]))
+    .then(() => getFilesPathsFromManyDirs([pathToTodayDir]))
     .then((filesPaths) => copyFilesForVideo(filesPaths, pathToTmpDir))
     .then(() => makeVideoSpawn(pathToTmpDir, pathToVideosDir, videoFileName))
     .catch((e) => console.log(e.message));
@@ -39,4 +40,6 @@ const startMakeVideoFileEveryDay = (settings) => {
   setTimeout(() => makeVideoFileEveryDay(settings), startTime - currentTime);
 };
 
-startMakeVideoFileEveryDay(cam1);
+startMakeVideoFileEveryDay(cam3);
+
+// node bin/startMakeVideoFileEveryDay.js

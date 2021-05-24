@@ -1,19 +1,19 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-import { __dirname } from '../index.js';
+// import { __dirname } from "../index.js";
 
 const fsp = fs.promises;
 
-const getCameraPaths = (camera) => {
-  const pathToCamDir = path.join(__dirname, '..', 'cameras', camera.id);
-  return {
-    pathToCamDir,
-    pathToImagesDir: path.join(pathToCamDir, 'images'),
-    pathToVideosDir: path.join(pathToCamDir, 'videos'),
-    pathToLogFile: path.join(pathToCamDir, `${camera.id}-log.txt`),
-  };
-};
+// const getCameraPaths = (camera) => {
+//   const pathToCamDir = path.join(__dirname, "..", "cameras", camera.id);
+//   return {
+//     pathToCamDir,
+//     pathToImagesDir: path.join(pathToCamDir, "images"),
+//     pathToVideosDir: path.join(pathToCamDir, "videos"),
+//     pathToLogFile: path.join(pathToCamDir, `${camera.id}-log.txt`),
+//   };
+// };
 
 const getDirsPathsFromOneDir = (pathToImgsDir) =>
   fsp
@@ -32,8 +32,8 @@ const getFilesPathsFromManyDirs = (dirsPaths) => {
   return Promise.all(promises)
     .then((result) => result.flat())
     .catch((e) => {
-      console.log('catch err makeFilesPathsFromManyDirs -', e.message);
+      console.log("catch err makeFilesPathsFromManyDirs -", e.message);
     });
 };
 
-export { getCameraPaths, getDirsPathsFromOneDir, getFilesPathsFromManyDirs };
+export { getDirsPathsFromOneDir, getFilesPathsFromManyDirs };
